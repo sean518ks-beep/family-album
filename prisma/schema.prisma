@@ -24,9 +24,11 @@ model User {
   id       String @id @default(cuid())
   name     String?
   email    String? @unique
+  password String?
   familyId String
   family   Family  @relation(fields: [familyId], references: [id])
   posts    Post[]
+  comments Comment[]
 }
 
 model Post {
