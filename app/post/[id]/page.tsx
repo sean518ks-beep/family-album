@@ -1,3 +1,4 @@
+import { prisma } from "@/src/lib/prisma";
 
 const post = await prisma.post.findFirst({
     where: {

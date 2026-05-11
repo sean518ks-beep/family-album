@@ -1,4 +1,5 @@
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
+import { prisma } from "@/src/lib/prisma";
 import { getServerSession } from "next-auth";
 
 export default async function TimelinePage() {
@@ -15,9 +16,13 @@ export default async function TimelinePage() {
         <h1>家族アルバム</h1>
       </header>
 
+
       {posts.map(post => (
-        <img key={post.id} src={post.imageUrl} />
+        <div key={post.id}>
+          <img src={post.imageUrl} alt="" />
+        </div>
       ))}
+
     </main>
   );
 }
