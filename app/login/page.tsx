@@ -46,24 +46,24 @@ export default function LoginPage() {
         </button>
 
         {/* 新規登録 */}
-      <p className="text-center text-sm text-gray-500">
-        はじめてですか？{" "}
-        <Link href="/register" className="text-blue-500 underline">
-          新規登録
-        </Link>
-      </p>
+        <p className="text-center text-sm text-gray-500">
+          はじめてですか？{" "}
+          <Link href="/register" className="text-blue-500 underline">
+            新規登録
+          </Link>
+        </p>
 
-      {/* 区切り */}
-      <div className="text-center text-xs text-gray-400">または</div>
+        {/* 区切り */}
+        <div className="text-center text-xs text-gray-400">または</div>
 
-      {/* Googleログイン */}
-      <button
-        onClick={() => signIn("google")}
-        className="w-full rounded bg-red-500 py-2 text-white"
-      >
-        Googleでログイン
-      </button>
-    </div>
+        {/* Googleログイン */}
+        <button
+          onClick={() => signIn("google")}
+          className="w-full rounded bg-red-500 py-2 text-white"
+        >
+          Googleでログイン
+        </button>
+      </div>
     </main >
   );
 }

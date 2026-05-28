@@ -13,30 +13,81 @@ datasource db {
   provider = "postgresql"
 }
 
+model User {
+  id        String   @id @default(cuid())
+  email     String?  @unique
+  password  String?
+  createdAt DateTime @default(now())
+
+  profile   Profile?
+  memberships FamilyMember[]
+  posts     Post[]
+  comments  Comment[]
+}
+
+model Profile {
+  id       String @id @default(cuid())
+  userId   String @unique
+  user     User   @relation(fields: [userId], references: [id])
+
+  userName String
+  createdAt DateTime @default(now())
+}
+
 model Family {
   id    String @id @default(cuid())
   name  String
-  users User[]
-  posts Post[]
+
+  members FamilyMember[]
+  posts   Post[]
 }
 
-model User {
-  id       String @id @default(cuid())
-  name     String?
-  email    String? @unique
-  password String?
-  familyId String
-  family   Family  @relation(fields: [familyId], references: [id])
-  posts    Post[]
-  comments Comment[]
+model FamilyMember {
+  id        String @id @default(cuid())
+
+  userId    String
+  user      User   @relation(fields: [userId], references: [id])
+
+  familyId  String
+  family    Family @relation(fields: [familyId], references: [id])
+
+  role      String @default("viewer") // admin / editor / viewer
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, familyId])
 }
 
 model Post {
   id        String   @id @default(cuid())
+
   familyId  String
   family    Family   @relation(fields: [familyId], references: [id])
+
   userId    String
   user      User     @relation(fields: [userId], references: [id])
+
   imageUrl  String
+  title     String?  @db.VarChar(50)
+
+  createdAt DateTime @default(now())
+
+  comments  Comment[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+
+  content   String
+
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
   createdAt DateTime @default(now())
 }
+
+
+

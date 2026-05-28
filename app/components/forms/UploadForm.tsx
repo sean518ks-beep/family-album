@@ -1,14 +1,39 @@
-// src/components/forms/UploadForm.tsx
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export function UploadForm() {
     const [file, setFile] = useState<File | null>(null);
     const [text, setText] = useState("");
+    const router = useRouter();
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault(); // ✅ フォームのデフォルト動作止める
+
+        if (!file) return;
+
+        // ✅ 今は仮の画像URL（あとでS3などに変更）
+        const imageUrl = "https://placehold.co/600x600";
+
+        await fetch("/api/posts", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                imageUrl,
+                title: text,
+            }),
+        });
+
+        // ✅ 投稿後一覧へ
+        router.push("/timeline");
+    };
 
     return (
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
+
             {/* 写真選択 */}
             <label className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-6 text-gray-500 hover:bg-gray-50">
                 <span className="text-sm">
@@ -42,3 +67,4 @@ export function UploadForm() {
         </form>
     );
 }
+``
