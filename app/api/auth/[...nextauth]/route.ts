@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import { prisma } from "@/src/lib/prisma";
 
 export const authOptions = {
+    secret: process.env.NEXTAUTH_SECRET,
     providers: [
         // ✅ Googleログイン
         Google({
@@ -25,7 +26,13 @@ export const authOptions = {
                 }
 
                 const user = await prisma.user.findUnique({
-                    where: { email: credentials.email },
+                    where: {
+                        email: credentials.email,
+                    },
+                    include: {
+                        profile: true,
+                        memberships: true,
+                    },
                 });
 
                 // ユーザーがいない / passwordがない
@@ -46,8 +53,8 @@ export const authOptions = {
                 return {
                     id: user.id,
                     email: user.email,
-                    name: user.name,
-                    familyId: user.familyId,
+                    name: user.profile?.userName,
+                    familyId: user.memberships[0]?.familyId,
                 };
             },
         }),
@@ -58,14 +65,18 @@ export const authOptions = {
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
+                token.id = user.id;
                 token.familyId = user.familyId;
             }
             return token;
         },
         async session({ session, token }) {
-            if (token.familyId) {
-                session.familyId = token.familyId;
+            if (session.user) {
+                session.user.id = token.id as string;
             }
+
+            session.familyId = token.familyId as string;
+
             return session;
         },
     },

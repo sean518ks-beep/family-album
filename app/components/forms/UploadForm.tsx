@@ -6,39 +6,66 @@ import { useRouter } from "next/navigation";
 export function UploadForm() {
     const [file, setFile] = useState<File | null>(null);
     const [text, setText] = useState("");
+    const [loading, setLoading] = useState(false);
+
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault(); // ✅ フォームのデフォルト動作止める
+        e.preventDefault();
 
         if (!file) return;
 
-        // ✅ 今は仮の画像URL（あとでS3などに変更）
-        const imageUrl = "https://placehold.co/600x600";
+        try {
+            setLoading(true);
 
-        await fetch("/api/posts", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                imageUrl,
-                title: text,
-            }),
-        });
+            const formData = new FormData();
+            formData.append("file", file);
 
-        // ✅ 投稿後一覧へ
-        router.push("/timeline");
+            // ① Supabase Storageへアップロード
+            const uploadRes = await fetch("/api/upload", {
+                method: "POST",
+                body: formData,
+            });
+
+            const uploadData = await uploadRes.json();
+
+            if (!uploadRes.ok) {
+                throw new Error(uploadData.error);
+            }
+
+            // ② DBへ保存
+            const postRes = await fetch("/api/posts", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    imageUrl: uploadData.imageUrl,
+                    title: text,
+                }),
+            });
+
+            if (!postRes.ok) {
+                throw new Error("投稿に失敗しました");
+            }
+
+            router.push("/timeline");
+            router.refresh();
+        } catch (error) {
+            console.error(error);
+            alert("投稿に失敗しました");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
-
-            {/* 写真選択 */}
             <label className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-6 text-gray-500 hover:bg-gray-50">
                 <span className="text-sm">
                     {file ? file.name : "＋ 写真を選択"}
                 </span>
+
                 <input
                     type="file"
                     accept="image/*"
@@ -47,7 +74,14 @@ export function UploadForm() {
                 />
             </label>
 
-            {/* コメント */}
+            {file && (
+                <img
+                    src={URL.createObjectURL(file)}
+                    alt="preview"
+                    className="w-full rounded-lg border"
+                />
+            )}
+
             <textarea
                 placeholder="コメント（任意）"
                 value={text}
@@ -56,15 +90,13 @@ export function UploadForm() {
                 rows={3}
             />
 
-            {/* 投稿ボタン */}
             <button
                 type="submit"
-                disabled={!file}
+                disabled={!file || loading}
                 className="w-full rounded-md bg-blue-500 py-2 text-sm font-medium text-white disabled:opacity-40"
             >
-                投稿する
+                {loading ? "投稿中..." : "投稿する"}
             </button>
         </form>
     );
 }
-``
