@@ -38,8 +38,9 @@ model Family {
   id    String @id @default(cuid())
   name  String
 
-  members FamilyMember[]
-  posts   Post[]
+  members     FamilyMember[]
+  posts       Post[]
+  invitations Invitation[]
 }
 
 model FamilyMember {
@@ -89,5 +90,14 @@ model Comment {
   createdAt DateTime @default(now())
 }
 
+model Invitation {
+  id        String   @id @default(cuid())
+  code      String   @unique
+
+  familyId  String
+  family    Family   @relation(fields: [familyId], references: [id])
+
+  createdAt DateTime @default(now())
+}
 
 

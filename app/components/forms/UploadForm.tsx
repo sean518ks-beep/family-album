@@ -36,6 +36,7 @@ export function UploadForm() {
             // ② DBへ保存
             const postRes = await fetch("/api/posts", {
                 method: "POST",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
                 },

@@ -7,6 +7,7 @@ export async function POST(req: Request) {
     try {
         const session = await getServerSession(authOptions);
 
+
         if (!session) {
             return NextResponse.json(
                 { error: "Unauthorized" },
@@ -27,12 +28,25 @@ export async function POST(req: Request) {
 
         const familyId = session.familyId;
 
+        if (!familyId) {
+            return NextResponse.json(
+                { error: "familyId is missing" },
+                { status: 400 }
+            );
+        }
+
         const post = await prisma.post.create({
             data: {
                 imageUrl,
                 title,
-                userId,
-                familyId,
+
+                user: {
+                    connect: { id: userId },
+                },
+
+                family: {
+                    connect: { id: familyId },
+                },
             },
         });
 
