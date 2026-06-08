@@ -52,17 +52,6 @@ export default function LoginPage() {
             新規登録
           </Link>
         </p>
-
-        {/* 区切り */}
-        <div className="text-center text-xs text-gray-400">または</div>
-
-        {/* Googleログイン */}
-        <button
-          onClick={() => signIn("google")}
-          className="w-full rounded bg-red-500 py-2 text-white"
-        >
-          Googleでログイン
-        </button>
       </div>
     </main >
   );
