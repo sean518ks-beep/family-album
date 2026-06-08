@@ -34,7 +34,7 @@ export function CommentForm({ postId }: { postId: string }) {
     };
 
     return (
-        <div className="fixed bottom-0 left-0 right-0 z-30 border-t bg-white">
+        <div className="fixed bottom-16 left-0 right-0 z-30 border-t bg-white">
             <div className="mx-auto flex max-w-screen-sm gap-2 px-3 py-3">
                 <input
                     type="text"

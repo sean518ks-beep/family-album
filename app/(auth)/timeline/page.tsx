@@ -19,7 +19,7 @@ export default async function Page() {
 
   const posts = await prisma.post.findMany({
     where: {
-      familyId,
+      familyId: session.familyId,
     },
     orderBy: {
       createdAt: "desc",
@@ -30,6 +30,7 @@ export default async function Page() {
           profile: true,
         },
       },
+      comments: true,
     },
   });
 
