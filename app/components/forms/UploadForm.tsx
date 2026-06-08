@@ -42,6 +42,7 @@ export function UploadForm() {
                 },
                 body: JSON.stringify({
                     imageUrl: uploadData.imageUrl,
+                    mediaType: uploadData.mediaType,
                     title: text,
                 }),
             });
@@ -69,18 +70,28 @@ export function UploadForm() {
 
                 <input
                     type="file"
-                    accept="image/*"
+                    accept="image/*,video/*"
                     className="hidden"
                     onChange={(e) => setFile(e.target.files?.[0] ?? null)}
                 />
             </label>
 
             {file && (
-                <img
-                    src={URL.createObjectURL(file)}
-                    alt="preview"
-                    className="w-full rounded-lg border"
-                />
+                file.type.startsWith("video/") ? (
+                    <video
+                        src={URL.createObjectURL(file)}
+                        controls
+                        playsInline
+                        preload="metadata"
+                        className="w-full rounded-lg border bg-black"
+                    />
+                ) : (
+                    <img
+                        src={URL.createObjectURL(file)}
+                        alt="preview"
+                        className="w-full rounded-lg border"
+                    />
+                )
             )}
 
             <textarea

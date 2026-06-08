@@ -14,45 +14,53 @@ export async function POST(req: Request) {
             );
         }
 
-        const ext = file.name.split(".").pop() ?? "jpg";
+        const isVideo = file.type.startsWith("video/");
+        const isImage = file.type.startsWith("image/");
 
-        const fileName =
-            `${Date.now()}-${crypto.randomUUID()}.${ext}`;
+        if (!isImage && !isVideo) {
+            return NextResponse.json(
+                { error: "画像または動画を選択してください" },
+                { status: 400 }
+            );
+        }
+
+        const mediaType = isVideo ? "video" : "image";
+
+        const ext = file.name.split(".").pop() ?? (isVideo ? "mp4" : "jpg");
+
+        const fileName = `${Date.now()}-${crypto.randomUUID()}.${ext}`;
 
         console.log("UPLOAD FILE:", fileName);
+        console.log("MEDIA TYPE:", mediaType);
 
-        const { data: uploadData, error } = await supabaseAdmin.storage
+        const { error } = await supabaseAdmin.storage
             .from("photos")
-            .upload(fileName, file);
+            .upload(fileName, file, {
+                contentType: file.type,
+            });
 
         if (error) {
             console.error("SUPABASE STORAGE ERROR:", error);
 
             return NextResponse.json(
-                {
-                    error: error.message,
-                    details: error,
-                },
+                { error: error.message },
                 { status: 500 }
             );
         }
 
-        console.log("UPLOAD SUCCESS:", uploadData);
-
-        const { data: publicUrlData } = supabaseAdmin.storage
+        const { data } = supabaseAdmin.storage
             .from("photos")
             .getPublicUrl(fileName);
 
         return NextResponse.json({
-            imageUrl: publicUrlData.publicUrl,
+            imageUrl: data.publicUrl,
+            mediaType,
         });
     } catch (error) {
-        console.error("UPLOAD ROUTE ERROR:", error);
+        console.error("UPLOAD ERROR:", error);
 
         return NextResponse.json(
-            {
-                error: "アップロード失敗",
-            },
+            { error: "アップロード失敗" },
             { status: 500 }
         );
     }

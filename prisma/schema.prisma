@@ -69,6 +69,8 @@ model Post {
   user      User     @relation(fields: [userId], references: [id])
 
   imageUrl  String
+  mediaType String @default("image")
+
   title     String?  @db.VarChar(50)
 
   createdAt DateTime @default(now())

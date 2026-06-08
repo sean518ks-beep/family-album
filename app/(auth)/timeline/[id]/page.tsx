@@ -3,12 +3,12 @@ import { getServerSession } from "next-auth";
 
 import { prisma } from "@/src/lib/prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+
 import { HeaderBack } from "../../../components/layout/Headerback";
 import { PostDetail } from "../../../components/post/PostDetail";
 import { CommentList } from "../../../components/post/CommentList";
 import { CommentForm } from "../../../components/forms/CommentForm";
-
-
+import { DeletePostButton } from "../../../components/post/DeletePostButton";
 
 export default async function PostDetailPage({
     params,
@@ -19,7 +19,7 @@ export default async function PostDetailPage({
 
     const session = await getServerSession(authOptions);
 
-    if (!session?.familyId) {
+    if (!session?.user?.id || !session.familyId) {
         redirect("/login");
     }
 
@@ -53,12 +53,27 @@ export default async function PostDetailPage({
         redirect("/timeline");
     }
 
+    const member = await prisma.familyMember.findFirst({
+        where: {
+            userId: session.user.id,
+            familyId: session.familyId,
+        },
+    });
+
+    const canDelete =
+        post.userId === session.user.id || member?.role === "admin";
+
     return (
         <div className="pb-32">
             <HeaderBack title="投稿詳細" href="/timeline" />
 
             <div className="mx-auto max-w-screen-sm space-y-4 p-3">
                 <PostDetail post={post} />
+
+                {canDelete && (
+                    <DeletePostButton postId={post.id} />
+                )}
+
                 <CommentList comments={post.comments} />
             </div>
 

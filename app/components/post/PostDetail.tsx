@@ -1,11 +1,21 @@
 export function PostDetail({ post }) {
     return (
         <article className="overflow-hidden rounded-xl bg-white shadow-sm">
-            <img
-                src={post.imageUrl}
-                alt={post.title ?? "投稿画像"}
-                className="w-full object-cover"
-            />
+            {post.mediaType === "video" ? (
+                <video
+                    src={post.imageUrl}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    className="w-full bg-black"
+                />
+            ) : (
+                <img
+                    src={post.imageUrl}
+                    alt={post.title ?? "投稿画像"}
+                    className="w-full"
+                />
+            )}
 
             <div className="p-4">
                 <p className="font-semibold">
@@ -17,7 +27,7 @@ export function PostDetail({ post }) {
                 </p>
 
                 {post.title && (
-                    <p className="mt-2 text-sm">
+                    <p className="mt-2 text-sm text-gray-700">
                         {post.title}
                     </p>
                 )}

@@ -78,11 +78,29 @@ export function TimelineTabs({ posts }) {
                         className="overflow-hidden rounded-xl bg-white shadow-sm"
                     >
                         <Link href={`/timeline/${post.id}`}>
-                            <img
-                                src={post.imageUrl}
-                                alt={post.title ?? "投稿画像"}
-                                className="aspect-[4/3] w-full object-cover"
-                            />
+                            {post.mediaType === "video" ? (
+                                <div className="relative">
+                                    <video
+                                        src={post.imageUrl}
+                                        muted
+                                        preload="metadata"
+                                        className="aspect-[4/3] w-full object-cover"
+                                    />
+
+                                    {/* 再生アイコン */}
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <div className="rounded-full bg-black/40 px-4 py-2 text-3xl text-white">
+                                            ▶
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <img
+                                    src={post.imageUrl}
+                                    alt={post.title ?? "投稿画像"}
+                                    className="aspect-[4/3] w-full object-cover"
+                                />
+                            )}
                         </Link>
 
                         <div className="flex items-center justify-between px-4 py-3">
