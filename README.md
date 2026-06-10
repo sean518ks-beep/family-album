@@ -70,13 +70,27 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - コメント投稿
 - コメント一覧表示
 - コメント数表示
+### いいね機能
+- 投稿へのいいね
+- いいね解除
+- いいね数表示
 ### タイムライン機能
 - 月ごとの投稿表示
 - 月別タブ切替
 - コメント数表示
 ### アルバム機能
 - 月別アルバム表示
+
+  月ごとに整理
+- 自動アルバム
+  
+  キーワードに関する投稿を収集
 - 写真・動画の一覧表示
+### 検索機能
+以下の内容で検索可能
+- 投稿タイトル
+- 投稿者名
+- コメント内容
 
 ## 使用技術
 ### フロントエンド
@@ -106,6 +120,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - Post
 - Comment
 - Invitation
+- Like
+- AutoAlbum
+- AutoAlbumItem
 
 家族単位でデータを分離し、他家族の投稿を閲覧できない設計としています。
 
@@ -113,5 +130,40 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - 家族ごとに投稿を分離し、安全に利用できる設計
 - 招待コードによるシンプルな家族参加フロー
 - 管理者・編集者・閲覧者の権限管理
+- 簡単に探せる検索機能
+- 人気の写真や動画が一目でわかり、気軽に押せるいいねボタン
 - コンポーネント分割による保守性の向上
+
+## セットアップ
+```bash
+git clone <repository-url>
+
+cd family-album
+
+npm install
+
+npx prisma generate
+
+npx prisma db push
+
+npm run dev
+```
+
+## 環境変数
+```bash
+.env.local
+
+DATABASE_URL= 
+
+NEXTAUTH_SECRET= 
+
+NEXTAUTH_URL=http://localhost:3000
+
+NEXT_PUBLIC_SUPABASE_URL= 
+
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+
+SUPABASE_SERVICE_ROLE_KEY=
+```
+
 
