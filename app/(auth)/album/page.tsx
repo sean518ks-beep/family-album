@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 
 import { prisma } from "@/src/lib/prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
@@ -30,7 +30,6 @@ export default async function AlbumPage() {
         ).padStart(2, "0")}`;
 
         if (!acc[key]) acc[key] = [];
-
         acc[key].push(post);
 
         return acc;
@@ -40,7 +39,26 @@ export default async function AlbumPage() {
         <main className="min-h-screen bg-gray-50 pb-24">
             <AppHeader title="アルバム" />
 
-            <section className="mx-auto max-w-screen-sm space-y-4 p-3">
+            {/* タブ */}
+            <div className="mx-auto max-w-screen-sm px-3 pt-3">
+                <div className="grid grid-cols-2 rounded-2xl bg-white p-1 shadow-sm">
+                    <Link
+                        href="/album"
+                        className="rounded-xl bg-blue-500 py-2 text-center text-sm font-medium text-white"
+                    >
+                        月別アルバム
+                    </Link>
+
+                    <Link
+                        href="/auto-albums"
+                        className="rounded-xl py-2 text-center text-sm font-medium text-gray-600"
+                    >
+                        自動アルバム
+                    </Link>
+                </div>
+            </div>
+
+            <section className="mx-auto mt-4 max-w-screen-sm space-y-4 p-3">
                 {Object.entries(grouped).map(([month, items]) => {
                     const cover = items[0];
 

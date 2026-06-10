@@ -31,8 +31,14 @@ export default async function Page() {
         },
       },
       comments: true,
+      likes: true,
     },
   });
 
-  return <TimelineTabs posts={posts} />;
+  const postsWithCurrentUser = posts.map((post) => ({
+    ...post,
+    currentUserId: session.user?.id,
+  }));
+
+  return <TimelineTabs posts={postsWithCurrentUser} />;
 }

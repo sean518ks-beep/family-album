@@ -12,5 +12,5 @@ export default async function Home() {
     redirect("/login");
   }
 
-  redirect("/timeline");
+  redirect("/login");
 }

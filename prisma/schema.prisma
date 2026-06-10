@@ -23,6 +23,7 @@ model User {
   memberships FamilyMember[]
   posts     Post[]
   comments  Comment[]
+  likes Like[]
 }
 
 model Profile {
@@ -76,6 +77,10 @@ model Post {
   createdAt DateTime @default(now())
 
   comments  Comment[]
+
+  autoAlbumItems AutoAlbumItem[]
+
+  likes Like[]
 }
 
 model Comment {
@@ -102,4 +107,38 @@ model Invitation {
   createdAt DateTime @default(now())
 }
 
+model AutoAlbum {
+  id        String   @id @default(cuid())
+  familyId String
+  title     String
+  keyword   String
+  createdAt DateTime @default(now())
 
+  items AutoAlbumItem[]
+}
+
+model AutoAlbumItem {
+  id      String @id @default(cuid())
+
+  albumId String
+  album   AutoAlbum @relation(fields: [albumId], references: [id])
+
+  postId  String
+  post    Post @relation(fields: [postId], references: [id])
+
+  @@unique([albumId, postId])
+}
+
+model Like {
+  id        String   @id @default(cuid())
+
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([postId, userId])
+}
