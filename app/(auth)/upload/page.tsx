@@ -2,6 +2,7 @@ import { UploadForm } from "@/app/components/forms/UploadForm";
 import { AppHeader } from "../../components/layout/AppHeader";
 
 export default function UploadPage() {
+
     return (
         <main className="min-h-screen bg-gray-100">
             <AppHeader title="投稿" />

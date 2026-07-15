@@ -1,21 +1,29 @@
-import { TimelineTabs } from "@/app/components/timeline/TimelineTabs";
-import { prisma } from "@/src/lib/prisma";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 
-export default async function Page() {
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { prisma } from "@/src/lib/prisma";
+import { TimelineTabs } from "@/app/components/timeline/TimelineTabs";
+
+export const dynamic = "force-dynamic";
+
+export default async function TimelinePage() {
   const session = await getServerSession(authOptions);
 
-  if (!session) {
+  if (!session?.user?.id || !session.familyId) {
     redirect("/login");
   }
 
-  const familyId = session.familyId;
+  const member = await prisma.familyMember.findFirst({
+    where: {
+      userId: session.user.id,
+      familyId: session.familyId,
+    },
+  });
 
-  if (!familyId) {
-    redirect("/login");
-  }
+  const canPost =
+    member?.role === "admin" ||
+    member?.role === "editor";
 
   const posts = await prisma.post.findMany({
     where: {
@@ -37,8 +45,13 @@ export default async function Page() {
 
   const postsWithCurrentUser = posts.map((post) => ({
     ...post,
-    currentUserId: session.user?.id,
+    currentUserId: session.user.id,
   }));
 
-  return <TimelineTabs posts={postsWithCurrentUser} />;
+  return (
+    <TimelineTabs
+      posts={postsWithCurrentUser}
+      canPost={canPost}
+    />
+  );
 }

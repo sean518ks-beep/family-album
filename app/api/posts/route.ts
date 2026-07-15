@@ -1,42 +1,82 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/src/lib/prisma";
+
+const allowedMediaTypes = ["image", "video"];
 
 export async function POST(req: Request) {
     try {
         const session = await getServerSession(authOptions);
 
-        if (!session) {
+        if (!session?.user?.id || !session.familyId) {
             return NextResponse.json(
-                { error: "Unauthorized" },
+                { error: "ログインが必要です" },
                 { status: 401 }
             );
         }
 
-        const { imageUrl, title, mediaType } = await req.json();
+        const userId = session.user.id;
+        const familyId = session.familyId;
+
+        // ログインユーザーの家族内での役割を確認
+        const member = await prisma.familyMember.findFirst({
+            where: {
+                userId,
+                familyId,
+            },
+        });
+
+        if (!member) {
+            return NextResponse.json(
+                { error: "家族メンバーが見つかりません" },
+                { status: 403 }
+            );
+        }
+
+        // 閲覧者は投稿できない
+        if (member.role === "viewer") {
+            return NextResponse.json(
+                { error: "閲覧者は写真や動画を投稿できません" },
+                { status: 403 }
+            );
+        }
+
+        const body = await req.json();
+
+        const imageUrl =
+            typeof body.imageUrl === "string"
+                ? body.imageUrl.trim()
+                : "";
+
+        const title =
+            typeof body.title === "string"
+                ? body.title.trim()
+                : "";
+
+        const mediaType =
+            typeof body.mediaType === "string"
+                ? body.mediaType
+                : "image";
 
         if (!imageUrl) {
             return NextResponse.json(
-                { error: "imageUrl is required" },
+                { error: "画像または動画のURLがありません" },
                 { status: 400 }
             );
         }
 
-        const userId = session.user?.id;
-        const familyId = session.familyId;
-
-        if (!userId) {
+        if (!allowedMediaTypes.includes(mediaType)) {
             return NextResponse.json(
-                { error: "userId is missing" },
-                { status: 401 }
+                { error: "メディアの種類が不正です" },
+                { status: 400 }
             );
         }
 
-        if (!familyId) {
+        if (title.length > 50) {
             return NextResponse.json(
-                { error: "familyId is missing" },
+                { error: "コメントは50文字以内で入力してください" },
                 { status: 400 }
             );
         }
@@ -44,8 +84,8 @@ export async function POST(req: Request) {
         const post = await prisma.post.create({
             data: {
                 imageUrl,
-                title,
-                mediaType: mediaType ?? "image",
+                mediaType,
+                title: title || null,
 
                 user: {
                     connect: {
@@ -61,7 +101,7 @@ export async function POST(req: Request) {
             },
         });
 
-        return NextResponse.json(post);
+        return NextResponse.json(post, { status: 201 });
     } catch (error) {
         console.error("POST CREATE ERROR:", error);
 

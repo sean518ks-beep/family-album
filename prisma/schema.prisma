@@ -61,38 +61,34 @@ model FamilyMember {
 }
 
 model Post {
-  id        String   @id @default(cuid())
+  id String @id @default(cuid())
 
-  familyId  String
-  family    Family   @relation(fields: [familyId], references: [id])
+  familyId String
+  family   Family @relation(fields: [familyId], references: [id])
 
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  userId String
+  user   User @relation(fields: [userId], references: [id])
 
   imageUrl  String
-  mediaType String @default("image")
-
-  title     String?  @db.VarChar(50)
+  mediaType String  @default("image")
+  title     String? @db.VarChar(50)
 
   createdAt DateTime @default(now())
 
-  comments  Comment[]
-
+  comments       Comment[]
+  likes          Like[]
   autoAlbumItems AutoAlbumItem[]
-
-  likes Like[]
 }
 
 model Comment {
-  id        String   @id @default(cuid())
+  id      String @id @default(cuid())
+  content String
 
-  content   String
+  postId String
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
-  postId    String
-  post      Post     @relation(fields: [postId], references: [id])
-
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 }
@@ -108,35 +104,36 @@ model Invitation {
 }
 
 model AutoAlbum {
-  id        String   @id @default(cuid())
+  id       String @id @default(cuid())
   familyId String
-  title     String
-  keyword   String
+  title    String
+  keyword  String
+
   createdAt DateTime @default(now())
 
   items AutoAlbumItem[]
 }
 
 model AutoAlbumItem {
-  id      String @id @default(cuid())
+  id String @id @default(cuid())
 
   albumId String
-  album   AutoAlbum @relation(fields: [albumId], references: [id])
+  album   AutoAlbum @relation(fields: [albumId], references: [id], onDelete: Cascade)
 
-  postId  String
-  post    Post @relation(fields: [postId], references: [id])
+  postId String
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@unique([albumId, postId])
 }
 
 model Like {
-  id        String   @id @default(cuid())
+  id String @id @default(cuid())
 
-  postId    String
-  post      Post     @relation(fields: [postId], references: [id])
+  postId String
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 
