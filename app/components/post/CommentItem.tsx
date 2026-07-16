@@ -1,4 +1,18 @@
-export function CommentItem({ comment }) {
+type CommentItemProps = {
+    comment: {
+        id: string;
+        content: string;
+        user: {
+            profile: {
+                userName: string;
+            } | null;
+        };
+    };
+};
+
+export function CommentItem({
+    comment,
+}: CommentItemProps) {
     return (
         <div className="rounded-xl bg-white p-3 shadow-sm">
             <p className="text-sm font-semibold">

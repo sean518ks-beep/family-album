@@ -1,6 +1,22 @@
 import { CommentItem } from "./CommentItem";
 
-export function CommentList({ comments }) {
+type Comment = {
+    id: string;
+    content: string;
+    user: {
+        profile: {
+            userName: string;
+        } | null;
+    };
+};
+
+type CommentListProps = {
+    comments: Comment[];
+};
+
+export function CommentList({
+    comments,
+}: CommentListProps) {
     if (comments.length === 0) {
         return (
             <p className="text-center text-sm text-gray-500">

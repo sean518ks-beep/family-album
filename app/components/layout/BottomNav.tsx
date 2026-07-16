@@ -8,7 +8,7 @@ export function BottomNav() {
 
     return (
         <nav className="fixed bottom-0 left-0 right-0 z-30 border-t bg-white">
-            <div className="mx-auto grid max-w-screen-sm grid-cols-5 items-center py-2 text-center text-xs">
+            <div className="mx-auto grid max-w-screen-sm grid-cols-4 py-2 text-center text-xs">
                 <NavItem
                     href="/timeline"
                     icon="⌂"
@@ -22,13 +22,6 @@ export function BottomNav() {
                     label="アルバム"
                     active={pathname.startsWith("/album")}
                 />
-
-                <Link
-                    href="/upload"
-                    className="-mt-8 mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-blue-500 text-3xl text-white shadow-lg"
-                >
-                    ＋
-                </Link>
 
                 <NavItem
                     href="/settings/family"
@@ -51,11 +44,25 @@ export function BottomNav() {
     );
 }
 
-function NavItem({ href, icon, label, active }) {
+type NavItemProps = {
+    href: string;
+    icon: string;
+    label: string;
+    active: boolean;
+};
+
+function NavItem({
+    href,
+    icon,
+    label,
+    active,
+}: NavItemProps) {
     return (
         <Link
             href={href}
-            className={`flex flex-col items-center gap-1 py-1 transition ${active ? "font-semibold text-blue-500" : "text-gray-400"
+            className={`flex flex-col items-center gap-1 py-1 transition ${active
+                    ? "font-semibold text-blue-500"
+                    : "text-gray-400"
                 }`}
         >
             <span className="text-xl">{icon}</span>

@@ -1,4 +1,21 @@
-export function PostDetail({ post }) {
+type PostDetailProps = {
+    post: {
+        id: string;
+        imageUrl: string;
+        mediaType: string;
+        title: string | null;
+        createdAt: Date | string;
+        user: {
+            profile: {
+                userName: string;
+            } | null;
+        };
+    };
+};
+
+export function PostDetail({
+    post,
+}: PostDetailProps) {
     return (
         <article className="overflow-hidden rounded-xl bg-white shadow-sm">
             {post.mediaType === "video" ? (
@@ -13,7 +30,7 @@ export function PostDetail({ post }) {
                 <img
                     src={post.imageUrl}
                     alt={post.title ?? "投稿画像"}
-                    className="w-full"
+                    className="w-full object-cover"
                 />
             )}
 
@@ -27,7 +44,7 @@ export function PostDetail({ post }) {
                 </p>
 
                 {post.title && (
-                    <p className="mt-2 text-sm text-gray-700">
+                    <p className="mt-2 whitespace-pre-wrap text-sm text-gray-700">
                         {post.title}
                     </p>
                 )}

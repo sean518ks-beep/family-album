@@ -1,18 +1,27 @@
-import NextAuth from "next-auth";
+import NextAuth, { type NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import bcryptjs from "bcrypt";
+import bcrypt from "bcryptjs";
+
 import { prisma } from "@/src/lib/prisma";
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
+
     providers: [
-        // ✅ ID / パスワードログイン
         Credentials({
             name: "IDとパスワード",
+
             credentials: {
-                email: { label: "メールアドレス", type: "text" },
-                password: { label: "パスワード", type: "password" },
+                email: {
+                    label: "メールアドレス",
+                    type: "text",
+                },
+                password: {
+                    label: "パスワード",
+                    type: "password",
+                },
             },
+
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
                     return null;
@@ -28,12 +37,11 @@ export const authOptions = {
                     },
                 });
 
-                // ユーザーがいない / passwordがない
                 if (!user || !user.password) {
                     return null;
                 }
 
-                const isValid = await bcryptjs.compare(
+                const isValid = await bcrypt.compare(
                     credentials.password,
                     user.password
                 );
@@ -42,25 +50,27 @@ export const authOptions = {
                     return null;
                 }
 
-                // ✅ 認証成功
                 return {
                     id: user.id,
                     email: user.email,
-                    name: user.profile?.userName,
-                    familyId: user.memberships[0]?.familyId,
+                    name: user.profile?.userName ?? "名前未設定",
+                    familyId: user.memberships[0]?.familyId ?? null,
                 };
             },
         }),
     ],
+
     session: {
         strategy: "jwt",
     },
+
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
                 token.id = user.id;
                 token.familyId = user.familyId ?? null;
             }
+
             return token;
         },
 
@@ -69,12 +79,19 @@ export const authOptions = {
                 session.user.id = token.id as string;
             }
 
-            session.familyId = token.familyId ?? null;
+            session.familyId =
+                typeof token.familyId === "string"
+                    ? token.familyId
+                    : null;
 
             return session;
-        }
+        },
     },
 };
 
 const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
+
+export {
+    handler as GET,
+    handler as POST,
+};
