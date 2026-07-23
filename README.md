@@ -1,12 +1,12 @@
 # FAMILY ALBUM
 
 ## デモ
--URL:https://family-album-sooty.vercel.app/login
--デモアカウント
- -管理者メールアドレス:demo@example.com
- -管理者パスワード:demodemo
- -閲覧者メールアドレス:demo2@example.com
- -閲覧者パスワード:demo2demo2
+- URL:https://family-album-sooty.vercel.app/login
+- デモアカウント
+ - 管理者メールアドレス:demo@example.com
+ - 管理者パスワード:demodemo
+ - 閲覧者メールアドレス:demo2@example.com
+ - 閲覧者パスワード:demo2demo2
 
 ## 概要
 子供の成長を両親や祖父母に共有し、大切な思い出を記録できるアプリです。
