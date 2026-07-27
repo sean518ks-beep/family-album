@@ -5,32 +5,7 @@ import Link from "next/link";
 
 import { AppHeader } from "../layout/AppHeader";
 import { LikeButton } from "../post/LikeButton";
-
-type TimelinePost = {
-    id: string;
-    imageUrl: string;
-    mediaType: string;
-    title: string | null;
-    createdAt: Date | string;
-
-    currentUserId?: string;
-
-    user?: {
-        profile?: {
-            userName: string;
-        } | null;
-    } | null;
-
-    comments?: {
-        id: string;
-        content: string;
-    }[];
-
-    likes?: {
-        id: string;
-        userId: string;
-    }[];
-};
+import { TimelinePost } from "../../../types/post";
 
 type TimelineTabsProps = {
     posts: TimelinePost[];
@@ -44,10 +19,7 @@ export function TimelineTabs({
     const grouped = posts.reduce<Record<string, TimelinePost[]>>(
         (acc, post) => {
             const date = new Date(post.createdAt);
-
-            const key =
-                `${date.getFullYear()}年` +
-                `${date.getMonth() + 1}月`;
+            const key = `${date.getFullYear()}年${date.getMonth() + 1}月`;
 
             if (!acc[key]) {
                 acc[key] = [];
@@ -79,20 +51,17 @@ export function TimelineTabs({
                     </h2>
 
                     <p className="mt-2 text-sm text-gray-500">
-                        家族の写真や動画を投稿して、
-                        思い出を残しましょう
+                        家族の写真や動画を投稿して、思い出を残しましょう
                     </p>
 
-                    {canPost && (
+                    {canPost ? (
                         <Link
                             href="/upload"
                             className="mt-6 rounded-full bg-blue-500 px-6 py-2 text-sm font-medium text-white shadow"
                         >
                             写真・動画を投稿する
                         </Link>
-                    )}
-
-                    {!canPost && (
+                    ) : (
                         <p className="mt-4 text-xs text-gray-400">
                             閲覧者は投稿できません
                         </p>
@@ -106,7 +75,6 @@ export function TimelineTabs({
         <main className="min-h-screen bg-gray-50 pb-24">
             <AppHeader title="タイムライン" />
 
-            {/* 月タブ */}
             <div className="sticky top-14 z-10 bg-gray-50/95 py-3 backdrop-blur">
                 <div className="overflow-x-auto px-3">
                     <div className="flex min-w-max gap-2 rounded-2xl bg-white p-1 shadow-sm">
@@ -116,8 +84,8 @@ export function TimelineTabs({
                                 type="button"
                                 onClick={() => setSelectedMonth(month)}
                                 className={`shrink-0 rounded-2xl px-5 py-2 text-sm font-medium transition ${selectedMonth === month
-                                    ? "bg-blue-500 text-white shadow"
-                                    : "text-gray-600"
+                                        ? "bg-blue-500 text-white shadow"
+                                        : "text-gray-600"
                                     }`}
                             >
                                 {month}
@@ -127,14 +95,12 @@ export function TimelineTabs({
                 </div>
             </div>
 
-            {/* 月見出し */}
             <section className="px-3 pt-3">
                 <h2 className="mx-auto max-w-screen-sm text-xl font-bold">
                     {selectedMonth}
                 </h2>
             </section>
 
-            {/* 投稿一覧 */}
             <section className="mx-auto mt-3 max-w-screen-sm space-y-3 px-3">
                 {grouped[selectedMonth]?.map((post) => (
                     <article
@@ -172,17 +138,14 @@ export function TimelineTabs({
                         </Link>
 
                         <div className="px-4 py-3">
-                            {/* いいね・コメント */}
                             <div className="flex items-center gap-4">
                                 <LikeButton
                                     postId={post.id}
-                                    initialCount={post.likes?.length ?? 0}
-                                    initialLiked={
-                                        post.likes?.some(
-                                            (like) =>
-                                                like.userId === post.currentUserId
-                                        ) ?? false
-                                    }
+                                    initialCount={post.likes.length}
+                                    initialLiked={post.likes.some(
+                                        (like) =>
+                                            like.userId === post.currentUserId
+                                    )}
                                 />
 
                                 <Link
@@ -190,21 +153,19 @@ export function TimelineTabs({
                                     className="flex items-center gap-1 text-sm text-gray-600"
                                 >
                                     <span>💬</span>
-                                    <span>{post.comments?.length ?? 0}</span>
+                                    <span>{post.comments.length}</span>
                                 </Link>
                             </div>
 
-                            {/* 投稿情報 */}
                             <div className="mt-3">
                                 <p className="text-sm font-semibold text-gray-800">
-                                    {post.user?.profile?.userName ??
-                                        "名前未設定"}
+                                    {post.user.profile?.userName ?? "名前未設定"}
                                 </p>
 
                                 <p className="text-xs text-gray-500">
-                                    {new Date(
-                                        post.createdAt
-                                    ).toLocaleDateString("ja-JP")}
+                                    {new Date(post.createdAt).toLocaleDateString(
+                                        "ja-JP"
+                                    )}
                                 </p>
 
                                 {post.title && (
@@ -218,12 +179,11 @@ export function TimelineTabs({
                 ))}
             </section>
 
-            {/* 編集者・管理者だけ表示 */}
             {canPost && (
                 <Link
                     href="/upload"
                     aria-label="写真・動画を投稿"
-                    className="fixed bottom-24 right-4 z-20 flex h-14 w-14 items-center justify-center rounded-full bg-blue-500 text-3xl text-white shadow-lg"
+                    className="fixed bottom-24 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-blue-500 text-3xl text-white shadow-lg"
                 >
                     ＋
                 </Link>
