@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 
 import { prisma } from "@/src/lib/prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { LogoutButton } from "@/app/components/settings/LogoutButton";
 
 export default async function SettingsPage() {
     const session = await getServerSession(authOptions);
@@ -68,12 +69,7 @@ export default async function SettingsPage() {
 
             {/* ログアウト */}
             <section className="rounded-2xl bg-white shadow-sm">
-                <Link
-                    href="/api/auth/signout"
-                    className="block p-4 text-center font-medium text-red-500"
-                >
-                    ログアウト
-                </Link>
+                <LogoutButton />
             </section>
         </main>
     );
