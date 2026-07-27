@@ -7,8 +7,6 @@ export async function GET() {
     try {
         const session = await getServerSession(authOptions);
 
-        console.log("INVITE SESSION:", session);
-
         if (!session?.familyId) {
             return NextResponse.json(
                 { error: "familyId がありません" },

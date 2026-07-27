@@ -6,8 +6,6 @@ export async function POST(req: Request) {
     try {
         const body = await req.json();
 
-        console.log("REGISTER BODY:", body);
-
         const { mode, userName, familyName, inviteCode, email, password } =
             body;
 
