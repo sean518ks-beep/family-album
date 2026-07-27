@@ -76,7 +76,7 @@ export async function POST(req: Request) {
 
         if (title.length > 50) {
             return NextResponse.json(
-                { error: "コメントは50文字以内で入力してください" },
+                { error: "タイトルは50文字以内で入力してください" },
                 { status: 400 }
             );
         }

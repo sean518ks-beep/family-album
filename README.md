@@ -69,7 +69,7 @@
 - TypeScript
 - Tailwind CSS
 ### バックエンド
-- Next.js Route Handle
+- Next.js Route Handler
 - NextAuth.js
 ### データベース
 - PostgreSQL
