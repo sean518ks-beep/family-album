@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 import { prisma } from "@/src/lib/prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { HeaderBack } from "../../../components/layout/Headerback";
+import { HeaderBack } from "@/app/components/layout/HeaderBack";
 
 
 export default async function AlbumMonthPage({

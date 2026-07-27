@@ -4,11 +4,11 @@ import { getServerSession } from "next-auth";
 import { prisma } from "@/src/lib/prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-import { HeaderBack } from "../../../components/layout/Headerback";
-import { PostDetail } from "../../../components/post/PostDetail";
-import { CommentList } from "../../../components/post/CommentList";
-import { CommentForm } from "../../../components/forms/CommentForm";
-import { DeletePostButton } from "../../../components/post/DeletePostButton";
+import { HeaderBack } from "@/app/components/layout/HeaderBack";
+import { PostDetail } from "@/app/components/post/PostDetail";
+import { CommentList } from "@/app/components/post/CommentList";
+import { CommentForm } from "@/app/components/post/CommentForm";
+import { DeletePostButton } from "@/app/components/post/DeletePostButton";
 
 export default async function PostDetailPage({
     params,

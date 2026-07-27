@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AppHeader } from "../../../components/layout/AppHeader";
+import { AppHeader } from "@/app/components/layout/AppHeader";
 
 export default function InvitePage() {
     const [copied, setCopied] = useState(false);

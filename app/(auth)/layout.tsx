@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { BottomNav } from "../components/layout/BottomNav";
+import { BottomNav } from "@/app/components/layout/BottomNav";
 
 export default async function AuthLayout({
     children,

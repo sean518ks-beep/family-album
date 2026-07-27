@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/src/lib/prisma";
-import { AppHeader } from "../../../components/layout/AppHeader";
+import { AppHeader } from "@/app/components/layout/AppHeader";
 
 export default async function FamilyPage() {
     const session = await getServerSession(authOptions);

@@ -2,8 +2,9 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/src/lib/prisma";
-import { RoleForm } from "../../../../components/forms/RoleForm";
-import { HeaderBack } from "../../../../components/layout/Headerback";
+import { RoleForm } from "@/app/components/forms/RoleForm";
+import { HeaderBack } from "@/app/components/layout/HeaderBack";
+
 
 export default async function RolePage({
     params,

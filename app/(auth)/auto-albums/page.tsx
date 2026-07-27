@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth";
 import { prisma } from "@/src/lib/prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { AppHeader } from "@/app/components/layout/AppHeader";
-import { CreateAutoAlbumForm } from "../../components/forms/CreateAutoAlbumForm";
+import { CreateAutoAlbumForm } from "@/app/components/forms/CreateAutoAlbumForm";
 
 export default async function AutoAlbumsPage() {
     const session = await getServerSession(authOptions);

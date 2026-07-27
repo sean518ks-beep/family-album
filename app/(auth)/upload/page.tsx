@@ -1,5 +1,5 @@
 import { UploadForm } from "@/app/components/forms/UploadForm";
-import { AppHeader } from "../../components/layout/AppHeader";
+import { AppHeader } from "@/app/components/layout/AppHeader";
 
 export default function UploadPage() {
 
