@@ -116,8 +116,8 @@ export function TimelineTabs({
                                 type="button"
                                 onClick={() => setSelectedMonth(month)}
                                 className={`shrink-0 rounded-2xl px-5 py-2 text-sm font-medium transition ${selectedMonth === month
-                                        ? "bg-blue-500 text-white shadow"
-                                        : "text-gray-600"
+                                    ? "bg-blue-500 text-white shadow"
+                                    : "text-gray-600"
                                     }`}
                             >
                                 {month}

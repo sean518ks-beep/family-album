@@ -1,13 +1,7 @@
+import { CommentWithUser } from "../../../types/post";
+
 type CommentItemProps = {
-    comment: {
-        id: string;
-        content: string;
-        user: {
-            profile: {
-                userName: string;
-            } | null;
-        };
-    };
+    comment: CommentWithUser;
 };
 
 export function CommentItem({

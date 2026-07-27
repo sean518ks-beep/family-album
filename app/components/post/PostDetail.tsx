@@ -1,16 +1,7 @@
+import { PostWithUser } from "../../../types/post";
+
 type PostDetailProps = {
-    post: {
-        id: string;
-        imageUrl: string;
-        mediaType: string;
-        title: string | null;
-        createdAt: Date | string;
-        user: {
-            profile: {
-                userName: string;
-            } | null;
-        };
-    };
+    post: PostWithUser;
 };
 
 export function PostDetail({
@@ -40,7 +31,7 @@ export function PostDetail({
                 </p>
 
                 <p className="text-sm text-gray-500">
-                    {new Date(post.createdAt).toLocaleDateString("ja-JP")}
+                    {post.createdAt.toLocaleDateString("ja-JP")}
                 </p>
 
                 {post.title && (

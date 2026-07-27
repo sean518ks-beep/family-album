@@ -1,6 +1,26 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 
-export default function SettingsPage() {
+import { prisma } from "@/src/lib/prisma";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+
+export default async function SettingsPage() {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.id) {
+        redirect("/login");
+    }
+
+    const user = await prisma.user.findUnique({
+        where: {
+            id: session.user.id,
+        },
+        include: {
+            profile: true,
+        },
+    });
+
     return (
         <main className="space-y-4 px-3 py-4">
             {/* ユーザー情報 */}
@@ -12,10 +32,11 @@ export default function SettingsPage() {
 
                     <div>
                         <p className="font-semibold">
-                            ユーザー名
+                            {user?.profile?.userName ?? "名前未設定"}
                         </p>
+
                         <p className="text-sm text-gray-500">
-                            家族アルバムへようこそ
+                            {user?.email}
                         </p>
                     </div>
                 </div>
