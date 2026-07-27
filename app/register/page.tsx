@@ -58,8 +58,11 @@ function RegisterForm() {
                 <button
                     type="button"
                     onClick={() => setMode("create")}
-                    className={`flex-1 rounded py-2 ${mode === "create" ? "bg-blue-500 text-white" : "bg-gray-100"
-                        }`}
+                    className={`flex-1 rounded py-2 ${
+                        mode === "create"
+                            ? "bg-blue-500 text-white"
+                            : "bg-gray-100"
+                    }`}
                 >
                     家族を作成
                 </button>
@@ -67,8 +70,11 @@ function RegisterForm() {
                 <button
                     type="button"
                     onClick={() => setMode("join")}
-                    className={`flex-1 rounded py-2 ${mode === "join" ? "bg-blue-500 text-white" : "bg-gray-100"
-                        }`}
+                    className={`flex-1 rounded py-2 ${
+                        mode === "join"
+                            ? "bg-blue-500 text-white"
+                            : "bg-gray-100"
+                    }`}
                 >
                     招待コードで参加
                 </button>

@@ -6,17 +6,14 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export async function DELETE(
     req: Request,
-    { params }: { params: Promise<{ postId: string }> }
+    { params }: { params: Promise<{ postId: string }> },
 ) {
     const { postId } = await params;
 
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.id || !session.familyId) {
-        return NextResponse.json(
-            { error: "Unauthorized" },
-            { status: 401 }
-        );
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const post = await prisma.post.findFirst({
@@ -29,7 +26,7 @@ export async function DELETE(
     if (!post) {
         return NextResponse.json(
             { error: "投稿が見つかりません" },
-            { status: 404 }
+            { status: 404 },
         );
     }
 
@@ -46,7 +43,7 @@ export async function DELETE(
     if (!isOwner && !isAdmin) {
         return NextResponse.json(
             { error: "削除する権限がありません" },
-            { status: 403 }
+            { status: 403 },
         );
     }
 

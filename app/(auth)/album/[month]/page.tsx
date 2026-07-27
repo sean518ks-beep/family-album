@@ -6,7 +6,6 @@ import { prisma } from "@/src/lib/prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { HeaderBack } from "@/app/components/layout/HeaderBack";
 
-
 export default async function AlbumMonthPage({
     params,
 }: {
@@ -32,19 +31,17 @@ export default async function AlbumMonthPage({
     const monthPosts = posts.filter((post) => {
         const d = new Date(post.createdAt);
 
-        const key = `${d.getFullYear()}-${String(
-            d.getMonth() + 1
-        ).padStart(2, "0")}`;
+        const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+            2,
+            "0",
+        )}`;
 
         return key === month;
     });
 
     return (
         <main className="min-h-screen bg-gray-50 pb-24">
-            <HeaderBack
-                title={`${month.replace("-", "年")}月`}
-                href="/album"
-            />
+            <HeaderBack title={`${month.replace("-", "年")}月`} href="/album" />
 
             <section className="grid grid-cols-3 gap-1 p-1">
                 {monthPosts.map((post) => (

@@ -12,10 +12,7 @@ type TimelineTabsProps = {
     canPost: boolean;
 };
 
-export function TimelineTabs({
-    posts,
-    canPost,
-}: TimelineTabsProps) {
+export function TimelineTabs({ posts, canPost }: TimelineTabsProps) {
     const grouped = posts.reduce<Record<string, TimelinePost[]>>(
         (acc, post) => {
             const date = new Date(post.createdAt);
@@ -29,14 +26,12 @@ export function TimelineTabs({
 
             return acc;
         },
-        {}
+        {},
     );
 
     const months = Object.keys(grouped);
 
-    const [selectedMonth, setSelectedMonth] = useState(
-        months[0] ?? ""
-    );
+    const [selectedMonth, setSelectedMonth] = useState(months[0] ?? "");
 
     if (posts.length === 0) {
         return (
@@ -83,10 +78,11 @@ export function TimelineTabs({
                                 key={month}
                                 type="button"
                                 onClick={() => setSelectedMonth(month)}
-                                className={`shrink-0 rounded-2xl px-5 py-2 text-sm font-medium transition ${selectedMonth === month
+                                className={`shrink-0 rounded-2xl px-5 py-2 text-sm font-medium transition ${
+                                    selectedMonth === month
                                         ? "bg-blue-500 text-white shadow"
                                         : "text-gray-600"
-                                    }`}
+                                }`}
                             >
                                 {month}
                             </button>
@@ -144,7 +140,7 @@ export function TimelineTabs({
                                     initialCount={post.likes.length}
                                     initialLiked={post.likes.some(
                                         (like) =>
-                                            like.userId === post.currentUserId
+                                            like.userId === post.currentUserId,
                                     )}
                                 />
 
@@ -159,13 +155,14 @@ export function TimelineTabs({
 
                             <div className="mt-3">
                                 <p className="text-sm font-semibold text-gray-800">
-                                    {post.user.profile?.userName ?? "名前未設定"}
+                                    {post.user.profile?.userName ??
+                                        "名前未設定"}
                                 </p>
 
                                 <p className="text-xs text-gray-500">
-                                    {new Date(post.createdAt).toLocaleDateString(
-                                        "ja-JP"
-                                    )}
+                                    {new Date(
+                                        post.createdAt,
+                                    ).toLocaleDateString("ja-JP")}
                                 </p>
 
                                 {post.title && (

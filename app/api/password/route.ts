@@ -10,7 +10,10 @@ export async function PATCH(req: Request) {
         const session = await getServerSession(authOptions);
 
         if (!session?.user?.id) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+            return NextResponse.json(
+                { error: "Unauthorized" },
+                { status: 401 },
+            );
         }
 
         const { currentPassword, newPassword } = await req.json();
@@ -18,7 +21,7 @@ export async function PATCH(req: Request) {
         if (!currentPassword || !newPassword) {
             return NextResponse.json(
                 { error: "入力してください" },
-                { status: 400 }
+                { status: 400 },
             );
         }
 
@@ -29,7 +32,7 @@ export async function PATCH(req: Request) {
         if (!user?.password) {
             return NextResponse.json(
                 { error: "ユーザーが見つかりません" },
-                { status: 404 }
+                { status: 404 },
             );
         }
 
@@ -38,7 +41,7 @@ export async function PATCH(req: Request) {
         if (!isValid) {
             return NextResponse.json(
                 { error: "現在のパスワードが違います" },
-                { status: 400 }
+                { status: 400 },
             );
         }
 
@@ -60,7 +63,7 @@ export async function PATCH(req: Request) {
                         ? error.message
                         : "パスワード変更に失敗しました",
             },
-            { status: 500 }
+            { status: 500 },
         );
     }
 }

@@ -11,7 +11,7 @@ export async function POST(req: Request) {
         if (!session?.familyId) {
             return NextResponse.json(
                 { error: "Unauthorized" },
-                { status: 401 }
+                { status: 401 },
             );
         }
 
@@ -20,12 +20,21 @@ export async function POST(req: Request) {
         if (!keyword || typeof keyword !== "string") {
             return NextResponse.json(
                 { error: "キーワードを入力してください" },
-                { status: 400 }
+                { status: 400 },
             );
         }
 
         const keywordMap: Record<string, string[]> = {
-            ごはん: ["ごはん", "ご飯", "食事", "ランチ", "夕食", "朝ごはん", "晩ごはん", "おやつ"],
+            ごはん: [
+                "ごはん",
+                "ご飯",
+                "食事",
+                "ランチ",
+                "夕食",
+                "朝ごはん",
+                "晩ごはん",
+                "おやつ",
+            ],
             運動会: ["運動会", "かけっこ", "リレー", "玉入れ"],
             遊園地: ["遊園地", "テーマパーク", "観覧車", "メリーゴーランド"],
             誕生日: ["誕生日", "バースデー", "birthday"],
@@ -61,7 +70,7 @@ export async function POST(req: Request) {
         if (posts.length === 0) {
             return NextResponse.json(
                 { error: "対象の投稿が見つかりませんでした" },
-                { status: 404 }
+                { status: 404 },
             );
         }
 
@@ -92,7 +101,7 @@ export async function POST(req: Request) {
                         ? error.message
                         : "自動アルバム作成に失敗しました",
             },
-            { status: 500 }
+            { status: 500 },
         );
     }
 }

@@ -12,7 +12,7 @@ export async function GET() {
         if (!session?.familyId) {
             return NextResponse.json(
                 { error: "familyId がありません" },
-                { status: 401 }
+                { status: 401 },
             );
         }
 
@@ -50,7 +50,7 @@ export async function GET() {
                         ? error.message
                         : "招待リンク取得に失敗しました",
             },
-            { status: 500 }
+            { status: 500 },
         );
     }
 }

@@ -55,14 +55,15 @@ export default async function FamilyPage() {
 
                                 <div>
                                     <p className="font-medium">
-                                        {member.user.profile?.userName ?? "名前未設定"}
+                                        {member.user.profile?.userName ??
+                                            "名前未設定"}
                                     </p>
                                     <p className="text-sm text-gray-500">
                                         {member.role === "admin"
                                             ? "管理者"
                                             : member.role === "editor"
-                                                ? "編集者"
-                                                : "閲覧者"}
+                                              ? "編集者"
+                                              : "閲覧者"}
                                     </p>
                                 </div>
                             </div>

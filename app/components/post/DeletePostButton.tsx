@@ -2,11 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-export function DeletePostButton({
-    postId,
-}: {
-    postId: string;
-}) {
+export function DeletePostButton({ postId }: { postId: string }) {
     const router = useRouter();
 
     const deletePost = async () => {

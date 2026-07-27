@@ -6,17 +6,14 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export async function POST(
     req: Request,
-    { params }: { params: Promise<{ postId: string }> }
+    { params }: { params: Promise<{ postId: string }> },
 ) {
     const { postId } = await params;
 
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.id || !session.familyId) {
-        return NextResponse.json(
-            { error: "Unauthorized" },
-            { status: 401 }
-        );
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const { content } = await req.json();
@@ -24,7 +21,7 @@ export async function POST(
     if (!content || typeof content !== "string") {
         return NextResponse.json(
             { error: "コメントを入力してください" },
-            { status: 400 }
+            { status: 400 },
         );
     }
 
@@ -38,7 +35,7 @@ export async function POST(
     if (!post) {
         return NextResponse.json(
             { error: "投稿が見つかりません" },
-            { status: 404 }
+            { status: 404 },
         );
     }
 

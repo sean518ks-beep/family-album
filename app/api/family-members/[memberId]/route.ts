@@ -17,7 +17,7 @@ async function checkAdmin(userId: string, familyId: string) {
 
 export async function PATCH(
     req: Request,
-    { params }: { params: Promise<{ memberId: string }> }
+    { params }: { params: Promise<{ memberId: string }> },
 ) {
     const { memberId } = await params;
 
@@ -50,7 +50,7 @@ export async function PATCH(
     if (target.userId === session.user.id) {
         return NextResponse.json(
             { error: "自分自身の役割は変更できません" },
-            { status: 400 }
+            { status: 400 },
         );
     }
 
@@ -64,7 +64,7 @@ export async function PATCH(
 
 export async function DELETE(
     req: Request,
-    { params }: { params: Promise<{ memberId: string }> }
+    { params }: { params: Promise<{ memberId: string }> },
 ) {
     const { memberId } = await params;
 
@@ -91,7 +91,7 @@ export async function DELETE(
     if (target.userId === session.user.id) {
         return NextResponse.json(
             { error: "自分自身は削除できません" },
-            { status: 400 }
+            { status: 400 },
         );
     }
 

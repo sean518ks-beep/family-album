@@ -5,7 +5,6 @@ import { prisma } from "@/src/lib/prisma";
 import { RoleForm } from "@/app/components/forms/RoleForm";
 import { HeaderBack } from "@/app/components/layout/HeaderBack";
 
-
 export default async function RolePage({
     params,
 }: {
@@ -49,10 +48,7 @@ export default async function RolePage({
 
     return (
         <main className="min-h-screen bg-gray-100">
-            <HeaderBack
-                title="役割変更"
-                href="/settings/family"
-            />
+            <HeaderBack title="役割変更" href="/settings/family" />
 
             <section className="mx-auto mt-4 max-w-md px-4">
                 <div className="rounded-xl bg-white p-4 shadow">

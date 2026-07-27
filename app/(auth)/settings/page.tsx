@@ -36,9 +36,7 @@ export default async function SettingsPage() {
                             {user?.profile?.userName ?? "名前未設定"}
                         </p>
 
-                        <p className="text-sm text-gray-500">
-                            {user?.email}
-                        </p>
+                        <p className="text-sm text-gray-500">{user?.email}</p>
                     </div>
                 </div>
             </section>
@@ -91,9 +89,7 @@ function MenuItem({
         >
             <div>
                 <p className="font-medium">{title}</p>
-                <p className="text-sm text-gray-500">
-                    {description}
-                </p>
+                <p className="text-sm text-gray-500">{description}</p>
             </div>
 
             <span className="text-gray-400">›</span>

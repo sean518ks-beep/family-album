@@ -5,9 +5,7 @@ type CommentListProps = {
     comments: CommentWithUser[];
 };
 
-export function CommentList({
-    comments,
-}: CommentListProps) {
+export function CommentList({ comments }: CommentListProps) {
     if (comments.length === 0) {
         return (
             <p className="text-center text-sm text-gray-500">
@@ -19,10 +17,7 @@ export function CommentList({
     return (
         <section className="space-y-2">
             {comments.map((comment) => (
-                <CommentItem
-                    key={comment.id}
-                    comment={comment}
-                />
+                <CommentItem key={comment.id} comment={comment} />
             ))}
         </section>
     );

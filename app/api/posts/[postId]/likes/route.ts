@@ -6,7 +6,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export async function POST(
     req: Request,
-    { params }: { params: Promise<{ postId: string }> }
+    { params }: { params: Promise<{ postId: string }> },
 ) {
     const { postId } = await params;
 
@@ -24,7 +24,10 @@ export async function POST(
     });
 
     if (!post) {
-        return NextResponse.json({ error: "投稿が見つかりません" }, { status: 404 });
+        return NextResponse.json(
+            { error: "投稿が見つかりません" },
+            { status: 404 },
+        );
     }
 
     const existingLike = await prisma.like.findUnique({

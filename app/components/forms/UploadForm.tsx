@@ -76,8 +76,8 @@ export function UploadForm() {
                 />
             </label>
 
-            {file && (
-                file.type.startsWith("video/") ? (
+            {file &&
+                (file.type.startsWith("video/") ? (
                     <video
                         src={URL.createObjectURL(file)}
                         controls
@@ -91,8 +91,7 @@ export function UploadForm() {
                         alt="preview"
                         className="w-full rounded-lg border"
                     />
-                )
-            )}
+                ))}
 
             <textarea
                 placeholder="コメント（任意）"

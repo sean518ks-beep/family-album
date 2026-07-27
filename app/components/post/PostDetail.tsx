@@ -4,9 +4,7 @@ type PostDetailProps = {
     post: PostWithUser;
 };
 
-export function PostDetail({
-    post,
-}: PostDetailProps) {
+export function PostDetail({ post }: PostDetailProps) {
     return (
         <article className="overflow-hidden rounded-xl bg-white shadow-sm">
             {post.mediaType === "video" ? (

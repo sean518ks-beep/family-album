@@ -10,7 +10,6 @@ export type PostWithUser = Prisma.PostGetPayload<{
     };
 }>;
 
-
 export type TimelinePost = Prisma.PostGetPayload<{
     include: {
         user: {
@@ -24,7 +23,6 @@ export type TimelinePost = Prisma.PostGetPayload<{
 }> & {
     currentUserId: string;
 };
-
 
 export type CommentWithUser = Prisma.CommentGetPayload<{
     include: {

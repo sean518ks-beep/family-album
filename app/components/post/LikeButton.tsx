@@ -46,10 +46,11 @@ export function LikeButton({
         <button
             onClick={toggleLike}
             disabled={loading}
-            className={`flex items-center gap-1 rounded-full px-3 py-1 text-sm ${liked
+            className={`flex items-center gap-1 rounded-full px-3 py-1 text-sm ${
+                liked
                     ? "bg-pink-100 text-pink-500"
                     : "bg-gray-100 text-gray-600"
-                }`}
+            }`}
         >
             <span>{liked ? "❤️" : "🤍"}</span>
             <span>{count}</span>

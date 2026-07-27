@@ -70,9 +70,7 @@ export default async function PostDetailPage({
             <div className="mx-auto max-w-screen-sm space-y-4 p-3">
                 <PostDetail post={post} />
 
-                {canDelete && (
-                    <DeletePostButton postId={post.id} />
-                )}
+                {canDelete && <DeletePostButton postId={post.id} />}
 
                 <CommentList comments={post.comments} />
             </div>

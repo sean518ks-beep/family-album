@@ -22,18 +22,22 @@ export default async function AlbumPage() {
         },
     });
 
-    const grouped = posts.reduce((acc, post) => {
-        const d = new Date(post.createdAt);
+    const grouped = posts.reduce(
+        (acc, post) => {
+            const d = new Date(post.createdAt);
 
-        const key = `${d.getFullYear()}-${String(
-            d.getMonth() + 1
-        ).padStart(2, "0")}`;
+            const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+                2,
+                "0",
+            )}`;
 
-        if (!acc[key]) acc[key] = [];
-        acc[key].push(post);
+            if (!acc[key]) acc[key] = [];
+            acc[key].push(post);
 
-        return acc;
-    }, {} as Record<string, typeof posts>);
+            return acc;
+        },
+        {} as Record<string, typeof posts>,
+    );
 
     return (
         <main className="min-h-screen bg-gray-50 pb-24">

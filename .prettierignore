@@ -1,0 +1,4 @@
+.next
+app/generated
+node_modules
+coverage

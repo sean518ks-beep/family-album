@@ -51,19 +51,13 @@ type NavItemProps = {
     active: boolean;
 };
 
-function NavItem({
-    href,
-    icon,
-    label,
-    active,
-}: NavItemProps) {
+function NavItem({ href, icon, label, active }: NavItemProps) {
     return (
         <Link
             href={href}
-            className={`flex flex-col items-center gap-1 py-1 transition ${active
-                    ? "font-semibold text-blue-500"
-                    : "text-gray-400"
-                }`}
+            className={`flex flex-col items-center gap-1 py-1 transition ${
+                active ? "font-semibold text-blue-500" : "text-gray-400"
+            }`}
         >
             <span className="text-xl">{icon}</span>
             <span>{label}</span>

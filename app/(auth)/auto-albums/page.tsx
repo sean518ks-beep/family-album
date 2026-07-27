@@ -133,7 +133,9 @@ export default async function AutoAlbumsPage() {
                                 </p>
 
                                 <p className="mt-1 text-xs text-gray-400">
-                                    {new Date(album.createdAt).toLocaleDateString("ja-JP")}
+                                    {new Date(
+                                        album.createdAt,
+                                    ).toLocaleDateString("ja-JP")}
                                 </p>
                             </div>
                         </Link>

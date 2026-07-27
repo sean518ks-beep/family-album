@@ -43,7 +43,7 @@ export const authOptions: NextAuthOptions = {
 
                 const isValid = await bcrypt.compare(
                     credentials.password,
-                    user.password
+                    user.password,
                 );
 
                 if (!isValid) {
@@ -80,9 +80,7 @@ export const authOptions: NextAuthOptions = {
             }
 
             session.familyId =
-                typeof token.familyId === "string"
-                    ? token.familyId
-                    : null;
+                typeof token.familyId === "string" ? token.familyId : null;
 
             return session;
         },
@@ -91,7 +89,4 @@ export const authOptions: NextAuthOptions = {
 
 const handler = NextAuth(authOptions);
 
-export {
-    handler as GET,
-    handler as POST,
-};
+export { handler as GET, handler as POST };
