@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 
 import { prisma } from "@/src/lib/prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-i;
+import { HeaderBack } from "@/app/components/layout/HeaderBack";
 
 export default async function AutoAlbumDetailPage({
     params,

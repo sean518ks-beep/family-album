@@ -7,7 +7,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { HeaderBack } from "@/app/components/layout/HeaderBack";
 import { PostDetail } from "@/app/components/post/PostDetail";
 import { CommentList } from "@/app/components/post/CommentList";
-import { CommentForm } from "@/app/components/post/CommentForm";
+import { CommentForm } from "@/app/components/forms/CommentForm";
 import { DeletePostButton } from "@/app/components/post/DeletePostButton";
 
 export default async function PostDetailPage({
