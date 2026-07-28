@@ -1,58 +1,15 @@
-"use client";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 
-import { signIn } from "next-auth/react";
-import Link from "next/link";
-import { useState } from "react";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { LoginForm } from "../components/forms/LoginForm";
 
-export default function LoginPage() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+export default async function LoginPage() {
+    const session = await getServerSession(authOptions);
 
-    return (
-        <main className="flex min-h-screen items-center justify-center bg-gray-100">
-            <div className="w-full max-w-sm space-y-4 rounded-xl bg-white p-6 shadow">
-                <h1 className="text-center text-lg font-semibold">
-                    家族アルバム
-                </h1>
+    if (session?.user?.id) {
+        redirect("/timeline");
+    }
 
-                {/* ID・パスワードログイン */}
-                <input
-                    type="email"
-                    placeholder="メールアドレス"
-                    className="w-full rounded border p-2"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-
-                <input
-                    type="password"
-                    placeholder="パスワード"
-                    className="w-full rounded border p-2"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-
-                <button
-                    onClick={() =>
-                        signIn("credentials", {
-                            email,
-                            password,
-                            callbackUrl: "/timeline",
-                        })
-                    }
-                    className="w-full rounded bg-blue-500 py-2 text-white"
-                >
-                    ログイン
-                </button>
-
-                {/* 新規登録 */}
-                <p className="text-center text-sm text-gray-500">
-                    はじめてですか？{" "}
-                    <Link href="/register" className="text-blue-500 underline">
-                        新規登録
-                    </Link>
-                </p>
-            </div>
-        </main>
-    );
+    return <LoginForm />;
 }
