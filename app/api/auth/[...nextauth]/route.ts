@@ -7,6 +7,10 @@ import { prisma } from "@/src/lib/prisma";
 export const authOptions: NextAuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
 
+    pages: {
+        signIn: "/login",
+    },
+
     providers: [
         Credentials({
             name: "IDとパスワード",
@@ -37,7 +41,7 @@ export const authOptions: NextAuthOptions = {
                     },
                 });
 
-                if (!user || !user.password) {
+                if (!user?.password) {
                     return null;
                 }
 

@@ -1,14 +1,17 @@
 "use client";
 
-import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export function LoginForm() {
+    const router = useRouter();
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const handleLogin = async () => {
         if (!email.trim() || !password) {
@@ -16,23 +19,34 @@ export function LoginForm() {
             return;
         }
 
-        setLoading(true);
-        setError("");
+        try {
+            setLoading(true);
+            setError("");
 
-        const result = await signIn("credentials", {
-            email,
-            password,
-            redirect: false,
-        });
+            const result = await signIn("credentials", {
+                email: email.trim(),
+                password,
+                redirect: false,
+            });
 
-        setLoading(false);
+            if (!result) {
+                setError("ログイン処理に失敗しました");
+                return;
+            }
 
-        if (!result?.ok) {
-            setError("メールアドレスまたはパスワードが違います");
-            return;
+            if (result.error) {
+                setError("メールアドレスまたはパスワードが違います");
+                return;
+            }
+
+            router.push("/timeline");
+            router.refresh();
+        } catch (error) {
+            console.error("LOGIN ERROR:", error);
+            setError("ログイン中にエラーが発生しました");
+        } finally {
+            setLoading(false);
         }
-
-        window.location.href = "/timeline";
     };
 
     return (
@@ -46,7 +60,7 @@ export function LoginForm() {
                     type="email"
                     placeholder="メールアドレス"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(event) => setEmail(event.target.value)}
                     className="w-full rounded border p-2"
                 />
 
@@ -54,22 +68,29 @@ export function LoginForm() {
                     type="password"
                     placeholder="パスワード"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") {
+                    onChange={(event) => setPassword(event.target.value)}
+                    onKeyDown={(event) => {
+                        if (event.key === "Enter" && !loading) {
                             void handleLogin();
                         }
                     }}
                     className="w-full rounded border p-2"
                 />
 
-                {error && <p className="text-sm text-red-500">{error}</p>}
+                {error && (
+                    <p
+                        role="alert"
+                        className="rounded-lg bg-red-50 p-3 text-sm text-red-600"
+                    >
+                        {error}
+                    </p>
+                )}
 
                 <button
                     type="button"
                     onClick={handleLogin}
                     disabled={loading}
-                    className="w-full rounded bg-blue-500 py-2 text-white disabled:opacity-50"
+                    className="w-full rounded bg-blue-500 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     {loading ? "ログイン中..." : "ログイン"}
                 </button>
